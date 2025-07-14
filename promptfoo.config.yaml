@@ -45,7 +45,7 @@ providers:
     config:
       # 如果你的 Ollama 不在默认的 http://localhost:11434，可以在这里指定
       apiBaseUrl: http://localhost:11434
-      temperature: 0
+      temperature: 0.7
 
 # 3. 定义测试用例和断言（自动检查）
 # 这是最关键的部分，我们为每个测试用例都设置了期望的输出
