@@ -1,0 +1,1006 @@
+# promptfoo.config.yaml
+
+# 1. 定义你的提示词 - 简化版本
+prompts:
+  - |
+    # Task: English Word Validation
+
+    You are a highly precise English word validator. Your only function is to determine if the provided input is a valid English word, acronym, or common term.
+    ## Criteria for "yes"
+    - Standard dictionary words (e.g., "hello", "psychology") and their inflected forms (e.g., "running").
+    - Common proper nouns (e.g., "Google", "London").
+    - Widely recognized acronyms, initialisms, or formulas (e.g., "NASA", "H2O", "PhD").
+    - Common hyphenated terms (e.g., "state-of-the-art").
+
+    ## Criteria for "no"
+    - Gibberish or random characters (e.g., "asdfghj").
+    - Obvious misspellings.
+    - Strings that are not recognized words or terms.
+
+    ## Instructions & Examples
+    You must follow the output format exactly. Provide only the word "yes" or "no", in lowercase, with no explanation or punctuation.
+
+    Input: apple
+    Output: yes
+
+    Input: H2O
+    Output: yes
+
+    Input: state-of-the-art
+    Output: yes
+
+    Input: asdfghjkl
+    Output: no
+
+    Input: runnning
+    Output: no
+    
+    Input: {{word}}
+    Output:
+
+# 2. 定义模型提供商（Providers）
+providers:
+  # 使用 Ollama 的 gemma3:12b 模型
+  - id: ollama:chat:gemma3:12b
+    config:
+      # 如果你的 Ollama 不在默认的 http://localhost:11434，可以在这里指定
+      apiBaseUrl: http://localhost:11434
+      temperature: 0
+
+# 3. 定义测试用例和断言（自动检查）
+# 这是最关键的部分，我们为每个测试用例都设置了期望的输出
+tests:
+  # 标准英文单词（应该返回 yes）
+  - description: "基础名词"
+    vars:
+      word: "apple"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "动词"
+    vars:
+      word: "running"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "形容词"
+    vars:
+      word: "beautiful"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "副词"
+    vars:
+      word: "quickly"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "复数名词"
+    vars:
+      word: "computers"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "过去式动词"
+    vars:
+      word: "walked"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "现在分词"
+    vars:
+      word: "swimming"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "短单词"
+    vars:
+      word: "cat"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "长单词"
+    vars:
+      word: "international"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "复合词"
+    vars:
+      word: "basketball"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 专有名词（应该返回 yes）
+  - description: "地名"
+    vars:
+      word: "London"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "人名"
+    vars:
+      word: "John"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "公司名"
+    vars:
+      word: "Google"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "品牌名"
+    vars:
+      word: "iPhone"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "国家名"
+    vars:
+      word: "America"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 缩写和首字母缩略词（应该返回 yes）
+  - description: "常见缩写"
+    vars:
+      word: "NASA"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "学位缩写"
+    vars:
+      word: "PhD"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "技术缩写"
+    vars:
+      word: "HTML"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "组织缩写"
+    vars:
+      word: "FBI"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "常用缩写"
+    vars:
+      word: "USA"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 连字符单词（应该返回 yes）
+  - description: "连字符形容词"
+    vars:
+      word: "state-of-the-art"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "连字符名词"
+    vars:
+      word: "mother-in-law"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "连字符动词"
+    vars:
+      word: "re-evaluate"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "连字符复合词"
+    vars:
+      word: "twenty-one"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 化学和科学术语（应该返回 yes）
+  - description: "化学公式"
+    vars:
+      word: "H2O"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "化学元素"
+    vars:
+      word: "CO2"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "科学术语"
+    vars:
+      word: "DNA"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 更多有效单词
+  - description: "医学术语"
+    vars:
+      word: "medicine"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "技术词汇"
+    vars:
+      word: "algorithm"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "学术词汇"
+    vars:
+      word: "philosophy"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "日常词汇"
+    vars:
+      word: "breakfast"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "动物名称"
+    vars:
+      word: "elephant"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "颜色名称"
+    vars:
+      word: "purple"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "情感词汇"
+    vars:
+      word: "happiness"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "天气词汇"
+    vars:
+      word: "thunderstorm"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "音乐术语"
+    vars:
+      word: "symphony"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "建筑词汇"
+    vars:
+      word: "architecture"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "运动词汇"
+    vars:
+      word: "volleyball"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "食物名称"
+    vars:
+      word: "sandwich"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "职业名称"
+    vars:
+      word: "engineer"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "地理术语"
+    vars:
+      word: "mountain"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "时间词汇"
+    vars:
+      word: "yesterday"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "交通工具"
+    vars:
+      word: "airplane"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "学科名称"
+    vars:
+      word: "mathematics"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "植物名称"
+    vars:
+      word: "sunflower"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "乐器名称"
+    vars:
+      word: "guitar"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "家具名称"
+    vars:
+      word: "refrigerator"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "服装名称"
+    vars:
+      word: "sweater"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "工具名称"
+    vars:
+      word: "screwdriver"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "材料名称"
+    vars:
+      word: "aluminum"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "形状名称"
+    vars:
+      word: "rectangle"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "节日名称"
+    vars:
+      word: "Christmas"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "月份名称"
+    vars:
+      word: "September"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "星期名称"
+    vars:
+      word: "Wednesday"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 拼写错误的单词（应该返回 no）
+  - description: "拼写错误 - running"
+    vars:
+      word: "runnning"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - phenomenon"
+    vars:
+      word: "phenomemon"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - beautiful"
+    vars:
+      word: "beautifull"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - restaurant"
+    vars:
+      word: "restaraunt"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - necessary"
+    vars:
+      word: "neccessary"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - definitely"
+    vars:
+      word: "definately"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - tomorrow"
+    vars:
+      word: "tommorrow"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - business"
+    vars:
+      word: "bussiness"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - receive"
+    vars:
+      word: "recieve"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - separate"
+    vars:
+      word: "seperate"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - calendar"
+    vars:
+      word: "calender"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - occurred"
+    vars:
+      word: "occured"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - beginning"
+    vars:
+      word: "begining"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "拼写错误 - exercise"
+    vars:
+      word: "excersise"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  # 乱码和随机字符串（应该返回 no）
+  - description: "键盘乱码"
+    vars:
+      word: "asdfghjkl"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "随机字符串"
+    vars:
+      word: "xyzqwerty"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "数字字母混合"
+    vars:
+      word: "abc123def"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "特殊字符混合"
+    vars:
+      word: "hello@#$"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "纯数字"
+    vars:
+      word: "123456"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "重复字符"
+    vars:
+      word: "aaaaaaa"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "随机大小写"
+    vars:
+      word: "hElLo"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "倒写单词"
+    vars:
+      word: "olleh"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "无意义组合"
+    vars:
+      word: "zxcvbnm"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "键盘左侧"
+    vars:
+      word: "qwerty"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "混乱字符"
+    vars:
+      word: "fghijk"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "无效组合"
+    vars:
+      word: "mnbvcx"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  # 边界情况
+  - description: "非常短的无效词"
+    vars:
+      word: "zz"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "超长无效词"
+    vars:
+      word: "abcdefghijklmnopqrstuvwxyzabcdefg"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "单个字符"
+    vars:
+      word: "a"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "单个字符"
+    vars:
+      word: "c"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "单个无效字符"
+    vars:
+      word: "z"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 更多有效单词来达到100个
+  - description: "科技词汇"
+    vars:
+      word: "computer"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "教育词汇"
+    vars:
+      word: "university"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "医疗词汇"
+    vars:
+      word: "hospital"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "法律词汇"
+    vars:
+      word: "contract"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "金融词汇"
+    vars:
+      word: "investment"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "艺术词汇"
+    vars:
+      word: "painting"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "历史词汇"
+    vars:
+      word: "civilization"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "地理词汇"
+    vars:
+      word: "continent"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "天文词汇"
+    vars:
+      word: "galaxy"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "生物词汇"
+    vars:
+      word: "ecosystem"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "物理词汇"
+    vars:
+      word: "energy"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "化学词汇"
+    vars:
+      word: "molecule"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "心理学词汇"
+    vars:
+      word: "behavior"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "社会学词汇"
+    vars:
+      word: "community"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "政治词汇"
+    vars:
+      word: "democracy"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "经济词汇"
+    vars:
+      word: "market"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "环境词汇"
+    vars:
+      word: "sustainability"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "文学词汇"
+    vars:
+      word: "metaphor"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "语言词汇"
+    vars:
+      word: "vocabulary"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "宗教词汇"
+    vars:
+      word: "spiritual"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
