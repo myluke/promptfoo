@@ -6,21 +6,30 @@ prompts:
     # Task: English Word Validation
 
     You are a highly precise English word validator. Your only function is to determine if the provided input is a valid English word, acronym, or common term.
+
     ## Criteria for "yes"
     - Standard dictionary words (e.g., "hello", "psychology") and their inflected forms (e.g., "running").
     - Common proper nouns (e.g., "Google", "London").
     - Widely recognized acronyms, initialisms, or formulas (e.g., "NASA", "H2O", "PhD").
     - Common hyphenated terms (e.g., "state-of-the-art").
+    - Single-letter words like "a" and "I".
 
     ## Criteria for "no"
     - Gibberish or random characters (e.g., "asdfghj").
     - Obvious misspellings.
+    - Single letters that are not words (e.g., "q", "z").
     - Strings that are not recognized words or terms.
 
     ## Instructions & Examples
     You must follow the output format exactly. Provide only the word "yes" or "no", in lowercase, with no explanation or punctuation.
 
     Input: apple
+    Output: yes
+
+    Input: a
+    Output: yes
+
+    Input: I
     Output: yes
 
     Input: H2O
@@ -34,7 +43,7 @@ prompts:
 
     Input: runnning
     Output: no
-    
+
     Input: {{word}}
     Output:
 
@@ -44,7 +53,8 @@ providers:
   - id: ollama:chat:gemma3:12b
     config:
       # 如果你的 Ollama 不在默认的 http://localhost:11434，可以在这里指定
-      apiBaseUrl: http://localhost:11434
+      #apiBaseUrl: http://localhost:11434
+      apiBaseUrl: http://192.168.199.4:6086/v1
       temperature: 0.7
 
 # 3. 定义测试用例和断言（自动检查）
@@ -999,6 +1009,1138 @@ tests:
   - description: "宗教词汇"
     vars:
       word: "spiritual"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 第一批扩展：技术和编程术语（应该返回 yes）
+  - description: "编程语言"
+    vars:
+      word: "JavaScript"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "编程概念"
+    vars:
+      word: "algorithm"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "数据结构"
+    vars:
+      word: "array"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "软件开发"
+    vars:
+      word: "framework"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "数据库术语"
+    vars:
+      word: "database"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "网络协议"
+    vars:
+      word: "HTTP"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "操作系统"
+    vars:
+      word: "Linux"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "云计算"
+    vars:
+      word: "cloud"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "人工智能"
+    vars:
+      word: "machine"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "网络安全"
+    vars:
+      word: "encryption"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "版本控制"
+    vars:
+      word: "Git"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "API术语"
+    vars:
+      word: "API"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "前端技术"
+    vars:
+      word: "React"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "后端技术"
+    vars:
+      word: "server"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "移动开发"
+    vars:
+      word: "Android"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "区块链"
+    vars:
+      word: "blockchain"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "虚拟化"
+    vars:
+      word: "Docker"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "微服务"
+    vars:
+      word: "microservice"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "DevOps"
+    vars:
+      word: "DevOps"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "敏捷开发"
+    vars:
+      word: "Agile"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 第二批扩展：医学和法律术语（应该返回 yes）
+  - description: "医学器官"
+    vars:
+      word: "kidney"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "医学疾病"
+    vars:
+      word: "diabetes"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "医学治疗"
+    vars:
+      word: "surgery"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "医学药物"
+    vars:
+      word: "antibiotic"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "医学检查"
+    vars:
+      word: "diagnosis"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "医学专科"
+    vars:
+      word: "cardiology"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "医学急救"
+    vars:
+      word: "emergency"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "医学设备"
+    vars:
+      word: "stethoscope"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "法律文件"
+    vars:
+      word: "subpoena"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "法律程序"
+    vars:
+      word: "litigation"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "法律权利"
+    vars:
+      word: "copyright"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "法律职业"
+    vars:
+      word: "attorney"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "法律判决"
+    vars:
+      word: "verdict"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "法律证据"
+    vars:
+      word: "evidence"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "法律程序"
+    vars:
+      word: "jurisdiction"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "法律概念"
+    vars:
+      word: "liability"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "知识产权"
+    vars:
+      word: "trademark"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "刑法术语"
+    vars:
+      word: "felony"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "民法术语"
+    vars:
+      word: "plaintiff"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "宪法术语"
+    vars:
+      word: "amendment"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 第三批扩展：科学和数学术语（应该返回 yes）
+  - description: "物理概念"
+    vars:
+      word: "quantum"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "化学反应"
+    vars:
+      word: "oxidation"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "生物进化"
+    vars:
+      word: "evolution"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "天文学"
+    vars:
+      word: "constellation"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "地质学"
+    vars:
+      word: "sedimentary"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "数学几何"
+    vars:
+      word: "parallelogram"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "数学代数"
+    vars:
+      word: "polynomial"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "数学统计"
+    vars:
+      word: "probability"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "数学微积分"
+    vars:
+      word: "derivative"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "物理力学"
+    vars:
+      word: "momentum"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "物理电磁"
+    vars:
+      word: "electromagnetic"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "化学元素"
+    vars:
+      word: "hydrogen"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "生物细胞"
+    vars:
+      word: "mitochondria"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "生物遗传"
+    vars:
+      word: "chromosome"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "环境科学"
+    vars:
+      word: "photosynthesis"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "气象学"
+    vars:
+      word: "meteorology"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "海洋学"
+    vars:
+      word: "oceanography"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "材料科学"
+    vars:
+      word: "crystalline"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "核物理"
+    vars:
+      word: "radioactive"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "天体物理"
+    vars:
+      word: "supernova"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 第四批扩展：文化、体育和艺术术语（应该返回 yes）
+  - description: "体育项目"
+    vars:
+      word: "badminton"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "艺术形式"
+    vars:
+      word: "sculpture"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "音乐风格"
+    vars:
+      word: "classical"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "舞蹈类型"
+    vars:
+      word: "ballet"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "戏剧术语"
+    vars:
+      word: "tragedy"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "电影类型"
+    vars:
+      word: "documentary"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "摄影术语"
+    vars:
+      word: "exposure"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "设计概念"
+    vars:
+      word: "typography"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "奥运项目"
+    vars:
+      word: "gymnastics"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "水上运动"
+    vars:
+      word: "synchronize"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "田径项目"
+    vars:
+      word: "marathon"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "格斗运动"
+    vars:
+      word: "judo"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "冬季运动"
+    vars:
+      word: "skiing"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "文学体裁"
+    vars:
+      word: "sonnet"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "建筑风格"
+    vars:
+      word: "Renaissance"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "时尚术语"
+    vars:
+      word: "couture"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "烹饪技法"
+    vars:
+      word: "sauté"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "园艺术语"
+    vars:
+      word: "horticulture"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "娱乐活动"
+    vars:
+      word: "recreation"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "传统文化"
+    vars:
+      word: "folklore"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 第五批扩展：更多边界情况和错误拼写（应该返回 no）
+  - description: "更多拼写错误 - intelligence"
+    vars:
+      word: "inteligence"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "更多拼写错误 - environment"
+    vars:
+      word: "enviroment"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "更多拼写错误 - government"
+    vars:
+      word: "goverment"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "更多拼写错误 - development"
+    vars:
+      word: "developement"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "更多拼写错误 - maintenance"
+    vars:
+      word: "maintainance"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "更多拼写错误 - achievement"
+    vars:
+      word: "acheivment"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "更多拼写错误 - opportunity"
+    vars:
+      word: "oportunity"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "更多拼写错误 - management"
+    vars:
+      word: "managment"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "更多拼写错误 - experience"
+    vars:
+      word: "experiance"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "更多拼写错误 - knowledge"
+    vars:
+      word: "knowlege"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "乱码混合数字"
+    vars:
+      word: "ab3cd5ef"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "特殊符号组合"
+    vars:
+      word: "word@123"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "下划线分隔"
+    vars:
+      word: "test_word_123"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "点号分隔"
+    vars:
+      word: "file.name.txt"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "URL片段"
+    vars:
+      word: "www.example"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "编程变量名"
+    vars:
+      word: "myVariable"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "文件扩展名"
+    vars:
+      word: "filename.exe"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "混合大小写乱码"
+    vars:
+      word: "HeLLo123"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "连续重复字母"
+    vars:
+      word: "aaabbbccc"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  - description: "反向拼写单词"
+    vars:
+      word: "dlrow"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "no"
+
+  # 第六批扩展：现代术语、品牌和国际组织（应该返回 yes）
+  - description: "社交媒体"
+    vars:
+      word: "Instagram"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "流媒体服务"
+    vars:
+      word: "Netflix"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "电商平台"
+    vars:
+      word: "Amazon"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "汽车品牌"
+    vars:
+      word: "Tesla"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "航空公司"
+    vars:
+      word: "Emirates"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "国际组织"
+    vars:
+      word: "UNESCO"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "货币名称"
+    vars:
+      word: "Bitcoin"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "游戏平台"
+    vars:
+      word: "PlayStation"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "搜索引擎"
+    vars:
+      word: "Google"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "即时通讯"
+    vars:
+      word: "WhatsApp"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "视频会议"
+    vars:
+      word: "Zoom"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "云服务"
+    vars:
+      word: "iCloud"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "服装品牌"
+    vars:
+      word: "Nike"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "快餐品牌"
+    vars:
+      word: "McDonald"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "咖啡品牌"
+    vars:
+      word: "Starbucks"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "银行机构"
+    vars:
+      word: "Visa"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "航天机构"
+    vars:
+      word: "SpaceX"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "大学名称"
+    vars:
+      word: "Harvard"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "新闻媒体"
+    vars:
+      word: "Reuters"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "酒店品牌"
+    vars:
+      word: "Hilton"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  # 额外的技术缩写和现代术语
+  - description: "人工智能缩写"
+    vars:
+      word: "AI"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "机器学习缩写"
+    vars:
+      word: "ML"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "物联网缩写"
+    vars:
+      word: "IoT"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "虚拟现实缩写"
+    vars:
+      word: "VR"
+    options:
+      transform: "output.trim()"
+    assert:
+      - type: equals
+        value: "yes"
+
+  - description: "增强现实缩写"
+    vars:
+      word: "AR"
     options:
       transform: "output.trim()"
     assert:
