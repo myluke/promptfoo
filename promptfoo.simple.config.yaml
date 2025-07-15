@@ -1,0 +1,25 @@
+# 最简单的 Dify API 测试配置
+# 用于调试原始响应格式
+
+prompts:
+  - "{{word}}"
+
+providers:
+  - id: https
+    config:
+      url: 'http://192.168.199.4:8881/v1/workflows/run'
+      method: 'POST'
+      headers:
+        'Content-Type': 'application/json'
+        'Authorization': 'Bearer {{env.DIFY_API_KEY}}'
+      body:
+        inputs:
+          input_text: '{{word}}'
+        response_mode: 'blocking'
+        user: 'promptfoo-test'
+
+tests:
+  - vars:
+      word: "apple"
+  - vars:
+      word: "test" 

@@ -1,64 +1,33 @@
-# promptfoo.config.yaml
+# promptfoo.dify.config.yaml
+# 专门用于测试 Dify API 的配置文件
 
-# 1. 定义你的提示词 - 简化版本
+# 1. 定义你的提示词 - 简化版本（适配Dify工作流）
 prompts:
   - |
-    # Task: English Word Validation
+    # 注意：这个提示词可能不会直接发送给Dify，
+    # 而是通过工作流的inputs参数传递
+    # 具体取决于你的Dify工作流如何设计
+    {{word}}
 
-    You are a highly precise English word validator. Your only function is to determine if the provided input is a valid English word, acronym, or common term.
-
-    ## Criteria for "yes"
-    - Standard dictionary words (e.g., "hello", "psychology") and their inflected forms (e.g., "running").
-    - Common proper nouns (e.g., "Google", "London").
-    - Widely recognized acronyms, initialisms, or formulas (e.g., "NASA", "H2O", "PhD").
-    - Common hyphenated terms (e.g., "state-of-the-art").
-    - Single-letter words like "a" and "I".
-
-    ## Criteria for "no"
-    - Gibberish or random characters (e.g., "asdfghj").
-    - Obvious misspellings.
-    - Single letters that are not words (e.g., "q", "z").
-    - Strings that are not recognized words or terms.
-
-    ## Instructions & Examples
-    You must follow the output format exactly. Provide only the word "yes" or "no", in lowercase, with no explanation or punctuation.
-
-    Input: apple
-    Output: yes
-
-    Input: a
-    Output: yes
-
-    Input: I
-    Output: yes
-
-    Input: H2O
-    Output: yes
-
-    Input: state-of-the-art
-    Output: yes
-
-    Input: asdfghjkl
-    Output: no
-
-    Input: runnning
-    Output: no
-
-    Input: {{word}}
-    Output:
-
-# 2. 定义模型提供商（Providers）
+# 2. 定义模型提供商（使用Dify API）
 providers:
-  # 使用 Ollama 的 gemma3:12b 模型（保留原配置供比较）
-  - id: ollama:chat:gemma3:12b
+  - id: https
+    label: 'Dify Workflow API'
     config:
-      # 如果你的 Ollama 不在默认的 http://localhost:11434，可以在这里指定
-      #apiBaseUrl: http://localhost:11434
-      apiBaseUrl: http://192.168.199.4:6086/v1
-      temperature: 0.7
+      url: 'http://192.168.199.4:8881/v1/workflows/run'
+      method: 'POST'
+      headers:
+        'Content-Type': 'application/json'
+        'Authorization': 'Bearer {{env.DIFY_API_KEY}}'
+      body:
+        inputs:
+          input_text: '{{word}}' # 将测试变量传递给Dify工作流
+        response_mode: 'blocking' # 使用阻塞模式获得完整响应
+        user: 'promptfoo-test-user'
+      # 使用简单的单行响应转换，去除空白字符
+      transformResponse: 'json.data.outputs.text.trim()'
 
-# 3. 定义测试用例和断言（自动检查）
-# 这是最关键的部分，我们为每个测试用例都设置了期望的输出
+# 3. 定义测试用例（选择一些基础测试）
 tests:
   # 标准英文单词（应该返回 yes）
   - description: "基础名词"

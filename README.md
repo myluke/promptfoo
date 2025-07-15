@@ -86,6 +86,8 @@ promptfoo eval -c promptfoo.config.yaml
 # 或者使用 npx
 npx promptfoo eval
 npx promptfoo@latest eval -c promptfoo.config.yaml
+
+npx promptfoo eval -c promptfoo.dify.config.yaml --no-cache --max-concurrency 1
 ```
 
 ### 4. 查看结果
